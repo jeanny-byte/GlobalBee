@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="img/Globalbee.png">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://kit.fontawesome.com/3f5d557409.js" crossorigin="anonymous"></script>
+  <title>GlobalBee</title>
+  <style>
+.card {
+      width: 80%;
+      height: 100vh;
+      background-color: white;
+      border-radius: 10px;
+      margin: 0 auto;
+    }
+.prev-btn {
+      @apply float-left ml-2 z-10;
+    }
+.next-btn {
+      @apply float-right mr-2 z-10;
+    }
+.card-actions {
+      @apply flex justify-center;
+      width: 100%;
+      align-items: center;
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="h-screen flex items-center justify-center">
+    <div class="card">
+      <div class="card-body">
+        <img src="img/Globalbee.png" class="mx-auto mb-4" style="height: 90px; width: 90px;" alt="Image description">
+        <h2 class="card-title mx-auto mb-4">SHALOM GLOBAL ACADEMY - BEE CONSOLE</h2>
+        <div class="divider">Word to Spell</div>
+        <p id="word" class="mx-auto mb-4 card-title" style="color: rgb(1, 1, 23); font-size: 100px;">Card content goes here.</p>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-circle btn-sm btn-primary prev-btn mx-auto mb-6">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="btn btn-circle btn-sm btn-primary next-btn mx-auto mb-6">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  
+  </div>
+</body>
+<script>
+    // Initialize an array to store the fetched words
+    const fetchedWords = [];
+  
+    // Select the paragraph element that displays the word
+    const wordElement = document.getElementById('word');
+  
+    // Define a function to fetch a random word from the API
+    async function fetchRandomWord() {
+      const response = await fetch('http://127.0.0.1:8000/random_word');
+      const data = await response.json();
+      return data.word;
+    }
+  
+    // Define a function to display the next word
+    async function nextWord() {
+      // Fetch a new random word from the API
+      const word = await fetchRandomWord();
+  
+      // Add the new word to the array of fetched words
+      fetchedWords.push(word);
+  
+      // Display the new word
+      wordElement.innerText = word;
+    }
+  
+    // Define a function to display the previous word
+    function prevWord() {
+      // If there are any words in the array of fetched words,
+      // remove the last word and display it
+      if (fetchedWords.length > 0) {
+        const word = fetchedWords.pop();
+        wordElement.innerText = word;
+      }
+    }
+  
+    // Add event listeners to the next and previous buttons
+    document.querySelector('.next-btn').addEventListener('click', nextWord);
+    document.querySelector('.prev-btn').addEventListener('click', prevWord);
+  
+    // Fetch an initial random word when the page loads
+    fetchRandomWord().then(word => {
+      fetchedWords.push(word);
+      wordElement.innerText = word;
+    });
+  </script>
+</html>

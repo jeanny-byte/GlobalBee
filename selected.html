@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script src="https://kit.fontawesome.com/3f5d557409.js" crossorigin="anonymous"></script>
+  <title>GB-Selected</title>
+</head>
+<body>
+  <div class="container mx-auto">
+    <h1 class="text-4xl font-bold mb-4">Selected Words</h1>
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th>Word</th>
+        </tr>
+      </thead>
+      <tbody id="words-table-body">
+        <!-- Selected words will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Get the table body element
+const tableBody = document.getElementById("words-table-body");
+
+fetch('selected_words.txt')
+.then(response => response.text())
+.then(words => {
+    // Clear the table body
+    tableBody.innerHTML = "";
+
+    // Add each word to the table
+    words.split("\n").forEach(word => {
+      if (word) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.textContent = word;
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+      }
+    });
+  })
+.catch(error => console.error('Error fetching words:', error));
+  </script>
+</body>
+</html>
